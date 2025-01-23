@@ -216,7 +216,7 @@ int main(void)
     char *subj_str = "Maths";
     char *grade = "A"; // Change or keep
 
-    struct Subject *stu_head = NULL;
+    struct Student *stu_head = NULL;
 
     add_student(&stu_head, &stu_name, &subj_str, &grade);
 
