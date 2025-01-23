@@ -2,6 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 
+// #include "students.h"
+// #include "subjects.h"
+
+// This structure represents a subject
+// subject_name: A fixed-length string for the name of the subject
+// teacher_fullname: A fixed-length string for the name of the teacher teaching the subject
+// next: A pointer to the next subject in a linked list
 struct Subject
 {
     // Seg Fault
@@ -12,6 +19,12 @@ struct Subject
     struct Subject *next;
 };
 
+
+// This structure links a subject to a grade for a student
+
+// subj_ptr: A pointer to a struct Subject (the subject being graded)
+// grade: A single-character grade
+// next: A pointer to the next subject-grade pair in a linked list
 struct subject_grade
 {
     struct Subject *subj_ptr;
@@ -19,6 +32,11 @@ struct subject_grade
     struct subject_grade *next;
 };
 
+// This structure represents a Student
+
+// student_name: dynamically allocated string for the name of the student
+// subj_grade_ptr: A pointer to a linked list of struct subject_grade (subjects and their grades)
+// next: a pointer to the next Student in the linked list
 struct Student
 {
     char *student_name;
@@ -26,6 +44,11 @@ struct Student
     struct Student *next;
 };
 
+// Creates a new Subject node and initializes it with the given subject_name and teacher_fullname
+
+// Allocates memory for a new Subject
+// Copies subject_name and teacher_fullname into the new node.
+// Sets the next pointer to NULL
 struct Subject *create_subject(char **subject_name, char **teacher_fullname) {
     struct Subject *new_subject = malloc(sizeof(struct Subject));
     if (new_subject == NULL) {
@@ -43,7 +66,10 @@ struct Subject *create_subject(char **subject_name, char **teacher_fullname) {
     return new_subject;
 }
 
+// Adds a new Subject to the linked list of subjects
 
+// Creates a new Subject node using create_subject
+// Adds the new node to the end of the linked list
 void add_subject(struct Subject **head, char **subject_name, char **teacher_fullname) {
     struct Subject *new_subj = create_subject(subject_name, teacher_fullname);
     if (new_subj == NULL) {
@@ -62,7 +88,10 @@ void add_subject(struct Subject **head, char **subject_name, char **teacher_full
     temp->next = new_subj; // Add new subject to the end of the list
 }
 
+// searches for a subject in the linked list by name
 
+// Traverses the list of Subject nodes
+// Compares the subject_name field of each node to the input
 struct Subject *find_subject(struct Subject **head, char **subject_name) {
     if (head == NULL || *head == NULL) {
         return NULL; // No subjects in the list
@@ -79,7 +108,10 @@ struct Subject *find_subject(struct Subject **head, char **subject_name) {
     return NULL; // Subject not found
 }
 
+// Finds the first subject taught by a specific teacher
 
+// Traverses the subject list and compares teacher_fullname with teacher_name
+// Returns the matching Subject or NULL
 struct Subject *find_teacher_of_subject(struct Subject **head, char **teacher_name)
 {
     struct Subject *temp = *head;
@@ -95,6 +127,7 @@ struct Subject *find_teacher_of_subject(struct Subject **head, char **teacher_na
     return temp;
 }
 
+//  prints all the subjects and their corresponding teachers in the linked list
 void display_all_subjects(struct Subject **head) {
     if (head == NULL || *head == NULL) {
         printf("No subjects available.\n");
@@ -124,6 +157,13 @@ void display_all_subjects(struct Subject **head) {
 //     return new_student;
 // }
 
+
+// adds a new student to the linked list of students
+
+// Allocates memory for a new Student
+// Allocates memory for the student_name field
+// Initializes the new student’s subj_grade_ptr to NULL (no grades yet)
+// Adds the new student to the end of the list
 void add_student(struct Student **head, char **student_name, char **subj_name, char **grade) {
     struct Student *new_student = malloc(sizeof(struct Student));
     if (new_student == NULL) {
@@ -158,7 +198,10 @@ void add_student(struct Student **head, char **student_name, char **subj_name, c
     printf("[DEBUG] Student added: %s\n", new_student->student_name);
 }
 
+// Finds a student by their name in the student list
 
+// Traverses the student list and compares student_name with the provided name 
+// Returns the matching Student or NULL
 struct Student *find_student(struct Student **head, char **student_name)
 {
     struct Student *temp = *head;
@@ -174,6 +217,10 @@ struct Student *find_student(struct Student **head, char **student_name)
     return temp;
 }
 
+// Intended to find all students studying a specific subject
+
+// Appears incomplete
+// Iterates over the student list and attempts to compare student_name repeatedly
 struct Student *find_students_of_subject(struct Student **head, char **student_name)
 {
     struct Student *temp = *head;
