@@ -26,55 +26,59 @@ struct Student
     struct Student *next;
 };
 
-struct Subject *create_subject(char **subject_name, char **teacher_fullname)
-{
+struct Subject *create_subject(char **subject_name, char **teacher_fullname) {
     struct Subject *new_subject = malloc(sizeof(struct Subject));
-
-    if (new_subject == NULL)
-    {
-        printf("memory allocation failed\n");
+    if (new_subject == NULL) {
+        printf("Memory allocation failed\n");
         return NULL;
     }
 
-    strncpy(new_subject->subject_name, *subject_name, strlen(*subject_name));
-    strncpy(new_subject->teacher_fullname, *teacher_fullname, strlen(*teacher_fullname));
-    // printf("%s %s\n", new_subject->subject_name, new_subject->teacher_fullname);
+    // Safely copy the subject name and teacher name
+    strncpy(new_subject->subject_name, *subject_name, sizeof(new_subject->subject_name) - 1);
+    new_subject->subject_name[sizeof(new_subject->subject_name) - 1] = '\0'; // Null-terminate
+    strncpy(new_subject->teacher_fullname, *teacher_fullname, sizeof(new_subject->teacher_fullname) - 1);
+    new_subject->teacher_fullname[sizeof(new_subject->teacher_fullname) - 1] = '\0'; // Null-terminate
+
+    new_subject->next = NULL; // Initialize next pointer
     return new_subject;
 }
 
-void add_subject(struct Subject **head, char **subject_name, char **teacher_fullname)
-{
-    struct Subject *new_subj = create_subject(subject_name, teacher_fullname);
 
-    if (*head == NULL)
-    {
-        *head = new_subj;
+void add_subject(struct Subject **head, char **subject_name, char **teacher_fullname) {
+    struct Subject *new_subj = create_subject(subject_name, teacher_fullname);
+    if (new_subj == NULL) {
+        return; // Memory allocation failed
+    }
+
+    if (*head == NULL) {
+        *head = new_subj; // First subject in the list
         return;
     }
 
     struct Subject *temp = *head;
-
-    while (temp->next != NULL)
-    {
+    while (temp->next != NULL) {
         temp = temp->next;
     }
-    temp->next = new_subj;
+    temp->next = new_subj; // Add new subject to the end of the list
 }
 
-struct Subject *find_subject(struct Subject **head, char **subject_name)
-{
+
+struct Subject *find_subject(struct Subject **head, char **subject_name) {
+    if (head == NULL || *head == NULL) {
+        return NULL; // No subjects in the list
+    }
+
     struct Subject *temp = *head;
-
-    while (strncmp(temp->subject_name, *subject_name, strlen(*subject_name)))
-    {
-        if (temp->next == NULL)
-            return NULL;
-
+    while (temp != NULL) {
+        // Compare subject names
+        if (strncmp(temp->subject_name, *subject_name, sizeof(temp->subject_name)) == 0) {
+            return temp; // Subject found
+        }
         temp = temp->next;
     }
-
-    return temp;
+    return NULL; // Subject not found
 }
+
 
 struct Subject *find_teacher_of_subject(struct Subject **head, char **teacher_name)
 {
@@ -91,49 +95,69 @@ struct Subject *find_teacher_of_subject(struct Subject **head, char **teacher_na
     return temp;
 }
 
-void display_all_subjects(struct Subject **head)
-{
-    struct Subject *temp = *head;
-    while (temp->next != NULL)
-    {
-        printf("%s\n", temp->subject_name);
-        temp = temp->next;
-    }
-}
-
-struct Student *create_student(char **student_name, char **subject_name, char **grade)
-{
-    struct Student *new_student = malloc(sizeof(struct Student));
-
-    if (new_student == NULL)
-    {
-        printf("memory allocation failed\n");
-        return NULL;
-    }
-
-    strncpy(new_student->student_name, *student_name, strlen(*student_name));
-
-    return new_student;
-}
-
-void add_student(struct Student **head, char **student_name, char **subj_name, char **grade)
-{
-    struct Student *new_student = create_student(student_name, subj_name, grade);
-
-    if (*head == NULL)
-    {
-        *head = new_student;
+void display_all_subjects(struct Subject **head) {
+    if (head == NULL || *head == NULL) {
+        printf("No subjects available.\n");
         return;
     }
 
-    struct Student *temp = *head;
-
-    while (temp->next != NULL)
-    {
+    struct Subject *temp = *head;
+    while (temp != NULL) {
+        printf("Subject: %s, Teacher: %s\n", temp->subject_name, temp->teacher_fullname);
         temp = temp->next;
     }
-    temp->next = new_student;
 }
+
+
+// struct Student *create_student(char **student_name, char **subject_name, char **grade)
+// {
+//     struct Student *new_student = malloc(sizeof(struct Student));
+
+//     if (new_student == NULL)
+//     {
+//         printf("memory allocation failed\n");
+//         return NULL;
+//     }
+
+//     strncpy(new_student->student_name, *student_name, strlen(*student_name));
+
+//     return new_student;
+// }
+
+void add_student(struct Student **head, char **student_name, char **subj_name, char **grade) {
+    struct Student *new_student = malloc(sizeof(struct Student));
+    if (new_student == NULL) {
+        printf("Memory allocation failed\n");
+        return;
+    }
+
+    // Allocate memory for student_name
+    new_student->student_name = malloc(strlen(*student_name) + 1);
+    if (new_student->student_name == NULL) {
+        printf("Memory allocation failed\n");
+        free(new_student);
+        return;
+    }
+    strcpy(new_student->student_name, *student_name);
+
+    // Initialize subj_grade_ptr
+    new_student->subj_grade_ptr = NULL; // No grades yet
+    new_student->next = NULL;
+
+    // Add the student to the linked list
+    if (*head == NULL) {
+        *head = new_student;
+    } else {
+        struct Student *temp = *head;
+        while (temp->next != NULL) {
+            temp = temp->next;
+        }
+        temp->next = new_student;
+    }
+
+    printf("[DEBUG] Student added: %s\n", new_student->student_name);
+}
+
 
 struct Student *find_student(struct Student **head, char **student_name)
 {
@@ -173,52 +197,38 @@ struct Student *find_students_of_subject(struct Student **head, char **student_n
     return temp;
 }
 
-int main(void)
-{
+int main(void) {
+    struct Subject *subject_head = NULL; // Head of subject linked list
+    struct Student *student_head = NULL; // Head of student linked list
 
-    struct Subject *head = NULL;
-
+    // Add subjects
     char *subj_name = "Maths";
     char *teacher_fullname = "John";
+    add_subject(&subject_head, &subj_name, &teacher_fullname);
 
-    add_subject(&head, &subj_name, &teacher_fullname);
-    add_subject(&head, &subj_name, &teacher_fullname);
+    char *subj_name2 = "English";
+    char *teacher_fullname2 = "Jane";
+    add_subject(&subject_head, &subj_name2, &teacher_fullname2);
 
-    display_all_subjects(&head);
+    // Display all subjects
+    printf("Subjects:\n");
+    display_all_subjects(&subject_head);
 
-    char *random = "Random";
-
-    struct Subject *found = find_subject(&head, &random);
-
-    if (found == NULL)
-    {
-        printf("Subject Not Found\n");
-    }
-    else
-    {
-        printf("It worked: %s\n", found->subject_name);
-    }
-
-    struct Subject *found_teacher = find_teacher_of_subject(&head, &teacher_fullname);
-
-    if (found == NULL)
-    {
-        printf("Subject Not Found\n");
-    }
-    else
-    {
-        printf("It worked: %s\n", found->subject_name);
+    // Find a subject
+    char *search_subject = "Maths";
+    struct Subject *found = find_subject(&subject_head, &search_subject);
+    if (found != NULL) {
+        printf("Found Subject: %s, Teacher: %s\n", found->subject_name, found->teacher_fullname);
+    } else {
+        printf("Subject not found\n");
     }
 
-    // Student
+    // Add students
+    char *stu_name = "John Doe";
+    char *grade = "A";
+    add_student(&student_head, &stu_name, &subj_name, &grade);
 
-    char *stu_name = "John";
-    char *subj_str = "Maths";
-    char *grade = "A"; // Change or keep
-
-    struct Student *stu_head = NULL;
-
-    add_student(&stu_head, &stu_name, &subj_str, &grade);
+    // Future: Display students
 
     return 0;
 }
