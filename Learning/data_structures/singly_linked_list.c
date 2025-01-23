@@ -31,7 +31,7 @@ void insertAtTail(struct Node **head, int data)
 {
     struct Node *newNode = createNode(data);
 
-    if (head == NULL)
+    if (*head == NULL)
     {
         *head = newNode;
         return;
@@ -80,8 +80,8 @@ int main(void)
 {
     struct Node *head = NULL;
 
-    insertAtHead(&head, 10);
     insertAtTail(&head, 15);
+    insertAtHead(&head, 10);
     insertAtHead(&head, 20);
     insertAtHead(&head, 30);
     insertAtHead(&head, 40);
