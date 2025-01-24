@@ -31,13 +31,24 @@ struct Subject *create_subject(char **subject_name, char **teacher_fullname) {
 // Creates a new Subject node using create_subject
 // Adds the new node to the end of the linked list
 void add_subject(struct Subject **head, char **subject_name, char **teacher_fullname) {
-    struct Subject *new_subj = create_subject(subject_name, teacher_fullname);
+    struct Subject *new_subj = malloc(sizeof(struct Subject));
     if (new_subj == NULL) {
-        return; // Memory allocation failed
+        printf("[DEBUG] Memory allocation failed for new subject.\n");
+        return;
     }
 
+    // Copy subject name and teacher name
+    strncpy(new_subj->subject_name, *subject_name, sizeof(new_subj->subject_name) - 1);
+    new_subj->subject_name[sizeof(new_subj->subject_name) - 1] = '\0'; // Null-terminate
+    strncpy(new_subj->teacher_fullname, *teacher_fullname, sizeof(new_subj->teacher_fullname) - 1);
+    new_subj->teacher_fullname[sizeof(new_subj->teacher_fullname) - 1] = '\0'; // Null-terminate
+
+    new_subj->next = NULL; // Initialize the next pointer
+    printf("[DEBUG] New subject created: %s, Teacher: %s.\n", new_subj->subject_name, new_subj->teacher_fullname);
+
     if (*head == NULL) {
-        *head = new_subj; // First subject in the list
+        *head = new_subj;
+        printf("[DEBUG] Subject '%s' added as the first subject.\n", new_subj->subject_name);
         return;
     }
 
@@ -45,8 +56,10 @@ void add_subject(struct Subject **head, char **subject_name, char **teacher_full
     while (temp->next != NULL) {
         temp = temp->next;
     }
-    temp->next = new_subj; // Add new subject to the end of the list
+    temp->next = new_subj;
+    printf("[DEBUG] Subject '%s' added to the list.\n", new_subj->subject_name);
 }
+
 
 // searches for a subject in the linked list by name
 

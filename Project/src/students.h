@@ -13,7 +13,8 @@ struct Student
     struct Student *next;
 };
 
-void add_student(struct Student **head, char **student_name, char **subj_name, char **grade);
+                                                          //, char **subj_name, char **grade
+void add_student(struct Student **head, char **student_name                                 );
 struct Student *find_student(struct Student **head, char **student_name);
 struct Student *find_students_of_subject(struct Student **head, char **student_name);
 

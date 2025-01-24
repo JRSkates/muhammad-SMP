@@ -9,7 +9,8 @@
 // Allocates memory for the student_name field
 // Initializes the new student’s subj_grade_ptr to NULL (no grades yet)
 // Adds the new student to the end of the list
-void add_student(struct Student **head, char **student_name, char **subj_name, char **grade) {
+                                                          //, char **subj_name, char **grade
+void add_student(struct Student **head, char **student_name                                 ) {
     struct Student *new_student = malloc(sizeof(struct Student));
     if (new_student == NULL) {
         printf("Memory allocation failed\n");
@@ -66,25 +67,29 @@ struct Student *find_student(struct Student **head, char **student_name)
 // Intended to find all students studying a specific subject
 // Appears incomplete
 // Iterates over the student list and attempts to compare student_name repeatedly
-struct Student *find_students_of_subject(struct Student **head, char **student_name)
-{
-    struct Student *temp = *head;
 
-    while (temp->next != NULL)
-    {
+// struct Student *find_students_of_subject(struct Student **head, char **student_name)
+// {
+//     struct Student *temp = *head;
 
-        int len = sizeof(temp->student_name);
+//     while (temp->next != NULL)
+//     {
 
-        temp = temp->next;
-    }
+//         int len = sizeof(temp->student_name);
 
-    while (strncmp(temp->student_name, *student_name, strlen(*student_name)))
-    {
-        if (temp->next == NULL)
-            return NULL;
+//         temp = temp->next;
+//     }
 
-        temp = temp->next;
-    }
+//     while (strncmp(temp->student_name, *student_name, strlen(*student_name)))
+//     {
+//         if (temp->next == NULL)
+//             return NULL;
 
-    return temp;
-}
+//         temp = temp->next;
+//     }
+
+//     return temp;
+// }
+
+// void find_students_of_subject(struct Student **head, const char *subject_name) 
+// struct Subject *find_subject(Struct Subject **head, char[] subject_name) 
