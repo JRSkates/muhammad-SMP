@@ -9,13 +9,12 @@ void display_menu() {
     printf("\n--- School Management System ---\n");
     printf("1. Add Student\n");
     printf("2. Add Teacher\n");
-    printf("3. Add Subject to Student\n");
-    printf("4. Assign a Grade\n");
-    printf("5. Find Students by Subject\n");
-    printf("6. Find Teacher of Subject\n");
-    printf("7. Student Grade by Subject\n");
-    printf("8. Students of Teacher?\n");
-    printf("9. Exit\n");
+    printf("3. Add Subject & Grade to Student\n");
+    printf("4. Find Students by Subject\n");
+    printf("5. Find Teacher of Subject\n");
+    printf("6. Student Grade by Subject\n");
+    printf("7. Students of Teacher?\n");
+    printf("8. Exit\n");
     printf("--------------------------------\n");
     printf("Enter your choice: ");
 }
@@ -100,7 +99,7 @@ int main(void) {
             }
             
             case 3: { 
-                // Add subject to student
+                // Add subject and grade to student
                 char *student_name = malloc(50);
                 char *subject_name = malloc(50);
                 char *teacher_name = malloc(50);
@@ -164,47 +163,20 @@ int main(void) {
                 break;
             }
             case 4:
-                // Assign a Grade
-                // printf("\nEnter Grade: ");
-                // scanf(" %[^\n]", grade);
-                // printf("[DEBUG] Grade Entered: %s\n", grade);
-
-                // Find the student
-                // struct Student *student = find_student(&student_head, &student_name);
-                // if (student != NULL) {
-                //     struct subject_grade *new_grade = malloc(sizeof(struct subject_grade));
-                //     if (new_grade == NULL) {
-                //         printf("[DEBUG] Memory allocation failed for subject_grade.\n");
-                //         break;
-                //     }
-
-                //     // Link the subject and grade to the student
-                //     new_grade->subj_ptr = subject;
-                //     strcpy(new_grade->grade, grade);
-                //     new_grade->next = student->subj_grade_ptr;
-                //     student->subj_grade_ptr = new_grade;
-
-                //     printf("[DEBUG] Finished creating subject_grade.\n");
-                //     printf("\nSubject '%s' with Grade '%s' added to Student '%s'.\n", subject_name, grade, student_name);
-                // } else {
-                //     printf("[DEBUG] Error: Student not found after adding.\n");
-                // }
-                break;
-            case 5:
                 // Find Student by Subject
                 break;
-            case 6: {
+            case 5: {
                 // Find Teacher of Subject
                 break;
             }
-            case 7: {
+            case 6: {
                 // Student Grade by Subject
                 break;
             }
-            case 8:
+            case 7:
                 // Student of Teacher?
                 break;
-            case 9: {
+            case 8: {
                  // Exit program
                 printf("Goodbye!\n");
                 running = 0;
