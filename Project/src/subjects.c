@@ -33,7 +33,7 @@ struct Subject *create_subject(char **subject_name, char **teacher_fullname) {
 void add_subject(struct Subject **head, char **subject_name, char **teacher_fullname) {
     struct Subject *new_subj = malloc(sizeof(struct Subject));
     if (new_subj == NULL) {
-        printf("[DEBUG] Memory allocation failed for new subject.\n");
+        printf("Memory allocation failed for new subject.\n");
         return;
     }
 
@@ -44,11 +44,11 @@ void add_subject(struct Subject **head, char **subject_name, char **teacher_full
     new_subj->teacher_fullname[sizeof(new_subj->teacher_fullname) - 1] = '\0'; // Null-terminate
 
     new_subj->next = NULL; // Initialize the next pointer
-    printf("[DEBUG] New subject created: %s, Teacher: %s.\n", new_subj->subject_name, new_subj->teacher_fullname);
+    printf("New subject created: %s, Teacher: %s.\n", new_subj->subject_name, new_subj->teacher_fullname);
 
     if (*head == NULL) {
         *head = new_subj;
-        printf("[DEBUG] Subject '%s' added as the first subject.\n", new_subj->subject_name);
+        // printf("Subject '%s' added as the first subject.\n", new_subj->subject_name);
         return;
     }
 
@@ -57,7 +57,7 @@ void add_subject(struct Subject **head, char **subject_name, char **teacher_full
         temp = temp->next;
     }
     temp->next = new_subj;
-    printf("[DEBUG] Subject '%s' added to the list.\n", new_subj->subject_name);
+    // printf("Subject '%s' added to the list.\n", new_subj->subject_name);
 }
 
 

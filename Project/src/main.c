@@ -115,7 +115,7 @@ int main(void) {
                 
                 printf("\nEnter Subject Name: ");
                 scanf(" %[^\n]", subject_name);
-                printf("[DEBUG] Subject Name Entered: %s\n", subject_name);
+                // printf("[DEBUG] Subject Name Entered: %s\n", subject_name);
 
                 // Check if the subject exists
                 struct Subject *subject = find_subject(&subject_head, &subject_name);
@@ -123,16 +123,18 @@ int main(void) {
                 if (subject == NULL) {
                     printf("\nEnter Teacher's Full Name: ");
                     scanf(" %[^\n]", teacher_name);
-                    printf("[DEBUG] Teacher Name Entered: %s\n", teacher_name);
+                    // printf("[DEBUG] Teacher Name Entered: %s\n", teacher_name);
 
                     add_subject(&subject_head, &subject_name, &teacher_name);
-                    printf("[DEBUG] Subject '%s' added with Teacher '%s'.\n", subject_name, teacher_name);
+                    // printf("Subject '%s' added with Teacher '%s'.\n", subject_name, teacher_name);
 
                     subject = find_subject(&subject_head, &subject_name);
                 } else {
                     printf("\nSubject '%s' already exists.\n", subject_name);
                 }
 
+                printf("\n");
+                display_all_subjects(&subject_head);
                 break;
             }
             case 3:
