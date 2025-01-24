@@ -17,5 +17,6 @@ struct Student
 void add_student(struct Student **head, char **student_name                                 );
 struct Student *find_student(struct Student **head, char **student_name);
 struct Student *find_students_of_subject(struct Student **head, char **student_name);
+void display_all_students(struct Student **head);
 
 #endif // _STUDENTS_H_
