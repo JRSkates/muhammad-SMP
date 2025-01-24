@@ -23,7 +23,7 @@ struct Subject
 struct subject_grade
 {
     struct Subject *subj_ptr;
-    char grade[1];
+    char grade[5];
     struct subject_grade *next;
 };
 

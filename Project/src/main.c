@@ -9,11 +9,11 @@ void display_menu() {
     printf("\n--- School Management System ---\n");
     printf("1. Add Student\n");
     printf("2. Add Teacher\n");
-    printf("3. Assign a Grade\n");
-    printf("4. Find Students by Subject\n");
-    printf("5. Find Teacher of Subject\n");
-    printf("6. Student Grade by Subject\n");
-    printf("7. Add Subject\n");
+    printf("3. Add Subject to Student\n");
+    printf("4. Assign a Grade\n");
+    printf("5. Find Students by Subject\n");
+    printf("6. Find Teacher of Subject\n");
+    printf("7. Student Grade by Subject\n");
     printf("8. Students of Teacher?\n");
     printf("9. Exit\n");
     printf("--------------------------------\n");
@@ -39,26 +39,26 @@ int main(void) {
                     printf("Memory allocation failed.\n");
                     break;
                 }
-                
+
                 printf("\nEnter Student Name: ");
                 scanf(" %[^\n]", student_name);
-                
+
                 // Check if the student already exists
                 struct Student *student = find_student(&student_head, &student_name); // Pass address of student_name
-                
+
                 if (student == NULL) {
                     // Add the student to the list
                     add_student(&student_head, &student_name); // Pass address of student_name
-                
+
                     // Display full student list
                     display_all_students(&student_head);
                 } else {
                     printf("\nStudent '%s' already exists.\n", student_name);
                 }
-                
+
                 // Free allocated memory
                 free(student_name);
-                
+
                 break;
             }
             case 2: {
@@ -96,10 +96,74 @@ int main(void) {
 
                 free(subject_name);
                 free(teacher_name);
-                free(subject);
                 break;
             }
-            case 3:
+            
+            case 3: { 
+                // Add subject to student
+                char *student_name = malloc(50);
+                char *subject_name = malloc(50);
+                char *teacher_name = malloc(50);
+
+                if (!student_name || !subject_name || !teacher_name) {
+                    printf("Memory allocation failed.\n");
+                    break;
+                }
+
+                printf("\nEnter Student Name: ");
+                scanf(" %[^\n]", student_name);
+
+                // Find the student
+                struct Student *student = find_student(&student_head, &student_name);
+                if (student == NULL) {
+                    printf("\nStudent '%s' does not exist. Please add the student first.\n", student_name);
+                    free(student_name);
+                    free(subject_name);
+                    free(teacher_name);
+                    break;
+                }
+
+                printf("\nEnter Subject Name: ");
+                scanf(" %[^\n]", subject_name);
+
+                // Find the subject
+                struct Subject *subject = find_subject(&subject_head, &subject_name);
+                if (subject == NULL) {
+                    printf("\nSubject '%s' does not exist. Please add a teacher for this subject.\n", subject_name);
+                    printf("\nEnter Teacher's Full Name: ");
+                    scanf(" %[^\n]", teacher_name);
+
+                    // Add the new subject
+                    add_subject(&subject_head, &subject_name, &teacher_name);
+                    subject = find_subject(&subject_head, &subject_name);
+                }
+
+                // Create a new subject_grade
+                struct subject_grade *new_grade = malloc(sizeof(struct subject_grade));
+                if (new_grade == NULL) {
+                    printf("Memory allocation failed for subject_grade.\n");
+                    free(student_name);
+                    free(subject_name);
+                    free(teacher_name);
+                    break;
+                }
+
+                new_grade->subj_ptr = subject;
+                printf("\nEnter Grade for '%s': ", subject_name);
+                scanf(" %[^\n]", new_grade->grade);
+                new_grade->next = student->subj_grade_ptr;
+                student->subj_grade_ptr = new_grade;
+
+                printf("\nSubject '%s' with Grade '%s' added to Student '%s'.\n", subject_name, new_grade->grade, student_name);
+
+                // Free dynamically allocated memory
+                free(student_name);
+                free(subject_name);
+                free(teacher_name);
+
+                break;
+            }
+            case 4:
                 // Assign a Grade
                 // printf("\nEnter Grade: ");
                 // scanf(" %[^\n]", grade);
@@ -126,23 +190,17 @@ int main(void) {
                 //     printf("[DEBUG] Error: Student not found after adding.\n");
                 // }
                 break;
-            case 4:
+            case 5:
                 // Find Student by Subject
                 break;
-            case 5: {
+            case 6: {
                 // Find Teacher of Subject
                 break;
             }
-            case 6: {
+            case 7: {
                 // Student Grade by Subject
                 break;
             }
-            case 7:
-                // Add Subject
-                //char subject[50];
-
-
-                break;
             case 8:
                 // Student of Teacher?
                 break;

@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "students.h"
+#include "subjects.h"
 
 // adds a new student to the linked list of students
 // Allocates memory for a new Student
@@ -68,9 +69,25 @@ struct Student *find_student(struct Student **head, char **student_name) {
 void display_all_students(struct Student **head) {
     struct Student *temp = *head;
 
-    while (temp!= NULL) {
+    while (temp != NULL) {
         printf("Student: %s\n", temp->student_name);
-        temp = temp->next;
+
+        struct subject_grade *grade_temp = temp->subj_grade_ptr;
+
+        // Traverse the subject_grade list for this student
+        if (grade_temp == NULL) {
+            printf("  No subjects assigned.\n");
+        } else {
+            while (grade_temp != NULL) {
+                printf("  Subject: %s, Teacher: %s, Grade: %s\n", 
+                    grade_temp->subj_ptr->subject_name, 
+                    grade_temp->subj_ptr->teacher_fullname, 
+                    grade_temp->grade);
+                grade_temp = grade_temp->next;
+            }
+        }
+
+        temp = temp->next; // Move to the next student
     }
     printf("\n"); // Print a newline after all students are displayed
 }
