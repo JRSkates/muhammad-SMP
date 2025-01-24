@@ -32,7 +32,7 @@ struct subject_grade
 struct Subject *create_subject(char **subject_name, char **teacher_fullname);
 void add_subject(struct Subject **head, char **subject_name, char **teacher_fullname);
 struct Subject *find_subject(struct Subject **head, char **subject_name);
-struct Subject *find_teacher_of_subject(struct Subject **head, char **teacher_name);
 void display_all_subjects(struct Subject **head);
+void find_teacher_of_subject(struct Subject **head, char **subject_name);
 
 #endif // _SUBJECTS_H_

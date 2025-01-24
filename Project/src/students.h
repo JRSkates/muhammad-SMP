@@ -1,3 +1,5 @@
+#include "subjects.h"
+
 #ifndef _STUDENTS_H_
 #define _STUDENTS_H_
 
@@ -16,7 +18,8 @@ struct Student
                                                           //, char **subj_name, char **grade
 void add_student(struct Student **head, char **student_name                                 );
 struct Student *find_student(struct Student **head, char **student_name);
-struct Student *find_students_of_subject(struct Student **head, char **student_name);
+void find_students_of_subject(struct Student **student_head, struct Subject **subject_head, char *subject_name);
 void display_all_students(struct Student **head);
+
 
 #endif // _STUDENTS_H_

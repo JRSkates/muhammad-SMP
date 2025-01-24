@@ -82,22 +82,15 @@ struct Subject *find_subject(struct Subject **head, char **subject_name) {
 }
 
 // Finds the first subject taught by a specific teacher
+void find_teacher_of_subject(struct Subject **head, char **subject_name) {
+    // Check if the subject exists
+    struct Subject *subject = find_subject(head, subject_name);
 
-// Traverses the subject list and compares teacher_fullname with teacher_name
-// Returns the matching Subject or NULL
-struct Subject *find_teacher_of_subject(struct Subject **head, char **teacher_name)
-{
-    struct Subject *temp = *head;
-
-    while (strncmp(temp->teacher_fullname, *teacher_name, strlen(*teacher_name)))
-    {
-        if (temp->next == NULL)
-            return NULL;
-
-        temp = temp->next;
+    if (subject == NULL) {
+        printf("\nSubject Not Found.\n");
+    } else {
+        printf("\nTeacher of '%s' is: %s\n", *subject_name, subject->teacher_fullname);
     }
-
-    return temp;
 }
 
 //  prints all the subjects and their corresponding teachers in the linked list
