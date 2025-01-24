@@ -13,8 +13,7 @@ void display_menu() {
     printf("4. Find Students by Subject\n");
     printf("5. Find Teacher of Subject\n");
     printf("6. Student Grade by Subject\n");
-    printf("7. Students of Teacher?\n");
-    printf("8. Exit\n");
+    printf("7. Exit\n");
     printf("--------------------------------\n");
     printf("Enter your choice: ");
 }
@@ -199,12 +198,28 @@ int main(void) {
             }
             case 6: {
                 // Student Grade by Subject
+                char *subject_name = malloc(50);
+                char *student_name = malloc(50);
+
+                if (!subject_name || !student_name) {
+                    printf("Memory allocation failed.\n");
+                    break;
+                }
+
+                printf("\nEnter Student Name: ");
+                scanf(" %[^\n]", student_name);
+
+                printf("\nEnter Subject Name: ");
+                scanf(" %[^\n]", subject_name);
+                // printf("[DEBUG] Subject Name Entered: %s\n", subject_name);
+
+                find_student_grade(&student_head, student_name, subject_name);
+
+                free(subject_name);
+                free(student_name);
                 break;
             }
-            case 7:
-                // Student of Teacher?
-                break;
-            case 8: {
+            case 7: {
                  // Exit program
                 printf("Goodbye!\n");
                 running = 0;

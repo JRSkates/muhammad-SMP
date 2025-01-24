@@ -20,6 +20,7 @@ void add_student(struct Student **head, char **student_name                     
 struct Student *find_student(struct Student **head, char **student_name);
 void find_students_of_subject(struct Student **student_head, struct Subject **subject_head, char *subject_name);
 void display_all_students(struct Student **head);
+void find_student_grade(struct Student **head, char *student_name, char *subject_name);
 
 
 #endif // _STUDENTS_H_

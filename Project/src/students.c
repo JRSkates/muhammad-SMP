@@ -130,6 +130,29 @@ void find_students_of_subject(struct Student **student_head, struct Subject **su
     }
 }
 
+// Finds a specific students grade in a specific subject
+void find_student_grade(struct Student **head, char *student_name, char *subject_name) {
+    // Check if the student exists
+    struct Student *student = find_student(head, &student_name);
+
+    if (student == NULL) {
+        printf("\nStudent Not Found.\n");
+        return;
+    }
+
+    // Check if the student is studying the specific subject
+    struct subject_grade *grade_temp = student->subj_grade_ptr;
+    while (grade_temp!= NULL) {
+        if (strcmp(grade_temp->subj_ptr->subject_name, subject_name) == 0) {
+            printf("\n%s's grade in '%s' is: %s\n", student_name, subject_name, grade_temp->grade);
+            return;
+        }
+        grade_temp = grade_temp->next;
+    }
+
+    printf("\nStudent is not studying '%s'.\n", subject_name);
+}
+
 
 
 // void find_students_of_subject(struct Student **head, const char *subject_name) 
