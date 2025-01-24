@@ -162,9 +162,56 @@ int main(void) {
 
                 break;
             }
-            case 4:
-                // Find Student by Subject
+            case 4: {
+                // Find Students by Subject
+                char *subject_name = malloc(50);
+
+                if (!subject_name) {
+                    printf("Memory allocation failed.\n");
+                    break;
+                }
+
+                printf("\nEnter Subject Name: ");
+                scanf(" %[^\n]", subject_name);
+                // printf("[DEBUG] Subject Name Entered: %s\n", subject_name);
+
+                // Check if the subject exists
+                struct Subject *subject = find_subject(&subject_head, &subject_name);
+
+                if (subject == NULL) {
+                    printf("\nSubject Not Found.\n");
+                    free(subject_name);
+                    break;
+                }
+                
+                printf("\nStudents studying '%s':\n", subject_name);
+
+                // Find Students that study this subject
+                struct Student *temp = student_head;
+                int found = 0;
+                while (temp != NULL) {
+                    struct subject_grade *grade_temp = temp->subj_grade_ptr;
+
+                    // Traverse the student's subject-grade list
+                    while (grade_temp != NULL) {
+                        if (grade_temp->subj_ptr == subject) {
+                            printf(" %s\n", temp->student_name);
+                            found = 1;
+                            break;
+                        }
+                        grade_temp = grade_temp->next;
+                    }
+                    
+                    temp = temp->next;
+                }
+
+                if (!found) {
+                    printf("\nNo Students found studying '%s'.\n", subject_name);
+                }
+
+                free(subject_name);
                 break;
+            }
             case 5: {
                 // Find Teacher of Subject
                 char *subject_name = malloc(50);
@@ -183,10 +230,12 @@ int main(void) {
 
                 if (subject == NULL) {
                     printf("\nSubject Not Found.\n");
+                    free(subject_name);
                     break;
                 }
 
                 printf("\nTeacher of '%s' is: %s\n", subject_name, subject->teacher_fullname);
+                free(subject_name);
                 break;
             }
             case 6: {
