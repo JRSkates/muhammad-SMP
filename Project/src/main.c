@@ -8,7 +8,7 @@
 void display_menu() {
     printf("\n--- School Management System ---\n");
     printf("1. Add Student\n");
-    printf("2. Add Teacher\n");
+    printf("2. Add Subject & Teacher\n");
     printf("3. Add Subject & Grade to Student\n");
     printf("4. Find Students by Subject\n");
     printf("5. Find Teacher of Subject\n");
@@ -167,6 +167,26 @@ int main(void) {
                 break;
             case 5: {
                 // Find Teacher of Subject
+                char *subject_name = malloc(50);
+
+                if (!subject_name) {
+                    printf("Memory allocation failed.\n");
+                    break;
+                }
+
+                printf("\nEnter Subject Name: ");
+                scanf(" %[^\n]", subject_name);
+                // printf("[DEBUG] Subject Name Entered: %s\n", subject_name);
+
+                // Check if the subject exists
+                struct Subject *subject = find_subject(&subject_head, &subject_name);
+
+                if (subject == NULL) {
+                    printf("\nSubject Not Found.\n");
+                    break;
+                }
+
+                printf("\nTeacher of '%s' is: %s\n", subject_name, subject->teacher_fullname);
                 break;
             }
             case 6: {
