@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 #include "students.h"
 #include "subjects.h"
@@ -17,18 +18,46 @@ void display_menu() {
     printf("--------------------------------\n");
     printf("Enter your choice: ");
 }
+void clear_input_buffer() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF); // Discard characters until a newline or EOF is found
+}
 
-int main(void) {
+int validate_number(const char *input) {
+    // Check if the input is a valid number
+    for (int i = 0; input[i] != '\0'; i++) {
+        if (!isdigit(input[i]) && input[i] != '\n') {
+            return 0; // Not a valid number
+        }
+    }
+    return 1; // Valid number
+}
+
+int main() {
     struct Subject *subject_head = NULL; // Head of subject linked list
     struct Student *student_head = NULL; // Head of student linked list
 
-    int user_choice;
     int running = 1;
-    // char running = 1;
+    char buffer[100]; // Buffer to store user input
+    int user_choice;
 
     while (running) {
         display_menu();
-        scanf("%d", &user_choice);
+
+        // Read input using fgets
+        if (fgets(buffer, sizeof(buffer), stdin) == NULL) {
+            printf("Error reading input. Exiting.\n");
+            break;
+        }
+
+        // Validate the input
+        if (!validate_number(buffer)) {
+            printf("Invalid input. Please enter a number.\n");
+            continue; // Prompt the menu again
+        }
+
+        // Convert the validated input to an integer
+        user_choice = atoi(buffer);
         switch (user_choice) {
             case 1: { 
                 // Add Student
@@ -58,6 +87,7 @@ int main(void) {
                 // Free allocated memory
                 free(student_name);
 
+                clear_input_buffer();
                 break;
             }
             case 2: {
@@ -95,6 +125,8 @@ int main(void) {
 
                 free(subject_name);
                 free(teacher_name);
+
+                clear_input_buffer();
                 break;
             }
             
@@ -160,6 +192,7 @@ int main(void) {
                 free(subject_name);
                 free(teacher_name);
 
+                clear_input_buffer();
                 break;
             }
             case 4: {
@@ -177,6 +210,8 @@ int main(void) {
                 find_students_of_subject(&student_head, &subject_head, subject_name);
 
                 free(subject_name);
+
+                clear_input_buffer();
                 break;
             }
             case 5: {
@@ -194,6 +229,8 @@ int main(void) {
 
                 find_teacher_of_subject(&subject_head, &subject_name);
                 free(subject_name);
+
+                clear_input_buffer();
                 break;
             }
             case 6: {
@@ -217,6 +254,8 @@ int main(void) {
 
                 free(subject_name);
                 free(student_name);
+
+                clear_input_buffer();
                 break;
             }
             case 7: {
